@@ -1,0 +1,119 @@
+# Sway Configuration File
+
+
+# Wallpapers
+output * {
+  bg ~/.config/sway/wallpaper/birdseye.jpg fill
+}
+
+# Run with every reload
+exec_always {
+    # Xwayland app settings
+    xrdb ~/.Xdefaults
+    
+    # xsettingsd
+    xsettingsd
+    
+    # Import Gsettings
+    ~/.local/bin/import-gsettings
+
+}
+
+# Run once on login
+exec {
+    # Prevents GTK apps from hanging for 15-20 sec before launching
+    dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+
+    # Start pipewire
+    # ~/.local/bin/start-pipewire
+
+    # Waybar - Statusbar
+    waybar
+    
+    # Dunst - Notification
+    dunst
+    
+    # Polkit
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+    
+    # NetworkManager Applet
+    nm-applet
+
+    # MPD
+    mpd
+
+    # Fcitx5
+    # fcitx5
+
+    # Enable screensharing
+    /usr/libexec/xdg-desktop-portal -r
+    /usr/libexec/xdg-desktop-portal-wlr -r
+}
+
+gaps inner 0
+gaps outer 0
+default_border none
+default_floating_border none
+
+
+# Keybindings
+
+set $mod mod4
+set $term foot 
+set $menu fuzzel
+
+# Launch terminal with $mod+Return
+bindsym $mod+Return exec $term
+
+# Launch application menu with $mod+d
+bindsym $mod+a exec $menu
+
+# Kill focused window with $mod+Shift+q
+bindsym $mod+q kill
+
+# Reload Sway configuration with $mod+Shift+c
+bindsym $mod+Shift+c reload
+bindsym $mod+e exec nautilus
+
+# Swaylock 
+bindsym $mod+s exec swaylock
+
+
+# Workspace management
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# Move container to specific workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# Switch to prev/next workspace on all outputs
+bindsym $mod+CTRL+right workspace next
+bindsym $mod+CTRL+left workspace prev
+
+# Audio control
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+#Mouse sensitivity
+input "E-Signal USB Gaming Mouse" {
+    accel_profile "flat" # disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
+    pointer_accel 0.5 # set mouse sensitivity (between -1 and 1)
+}
